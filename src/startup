@@ -1,0 +1,6 @@
+if not fs.exists("/.sPhone/init") then
+  printError("sPhone not found")
+	return
+end
+
+shell.run("/.sPhone/init", "-s")

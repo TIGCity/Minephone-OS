@@ -1,0 +1,45 @@
+--
+-- Sertex Application Package
+-- Built with SPK builder 1.2
+--
+{
+  files = "{\
+  [ \"info.lua\" ] = \"local function clear()\\\
+  term.setBackgroundColor(sPhone.getTheme(\\\"backgroundColor\\\"))\\\
+  term.setTextColor(sPhone.getTheme(\\\"text\\\"))\\\
+  term.clear()\\\
+  term.setCursorPos(1,1)\\\
+end\\\
+clear()\\\
+sPhone.header(\\\"Info\\\", \\\"X\\\")\\\
+print(\\\"ID: \\\"..os.getComputerID())\\\
+print(\\\"User: \\\"..sPhone.user)\\\
+if os.getComputerLabel() then\\\
+	print(\\\"Label: \\\"..os.getComputerLabel())\\\
+end\\\
+print(\\\"Version: \\\"..sPhone.version)\\\
+print(\\\"\\\")\\\
+print(\\\"sPhone made by Sertex\\\")\\\
+print(\\\"Krist by 3d6\\\")\\\
+print(\\\"SHA256 by GravityScore\\\")\\\
+print(\\\"Compress by Creator\\\")\\\
+print(\\\"And thanks to dan200 for this mod!\\\")\\\
+\\\
+while true do\\\
+  local w, h = term.getSize()\\\
+  local _, _, x, y = os.pullEvent(\\\"mouse_click\\\")\\\
+  if y == 1 and x == w then\\\
+    return true\\\
+  end\\\
+end\",\
+}",
+  config = "{\
+  type = \"system\",\
+  name = \"Info\",\
+  main = \"info.lua\",\
+  id = \"sphone.info\",\
+  author = \"Sertex\",\
+  hidden = true,\
+  version = 1,\
+}",
+}

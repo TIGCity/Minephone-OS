@@ -1,0 +1,111 @@
+--
+-- Sertex Application Package
+-- Built with SPK builder 1.2
+--
+{
+  files = "{\
+  [ \"explorer.lua\" ] = \"local dir = nil\\\
+\\\
+local function split(inputstr, sep)\\\
+        if sep == nil then\\\
+                sep = \\\"%s\\\"\\\
+        end\\\
+        local t={} ; i=1\\\
+        for str in string.gmatch(inputstr, \\\"([^\\\"..sep..\\\"]+)\\\") do\\\
+                t[i] = str\\\
+                i = i + 1\\\
+        end\\\
+        return t\\\
+end\\\
+\\\
+local function run(path, args)\\\
+	return pcall(function()\\\
+		os.run(setmetatable({\\\
+			shell = shell,\\\
+			multishell = multishell,\\\
+		}, {__index = getfenv()}), path, args)\\\
+	end)\\\
+end\\\
+while true do\\\
+	local path, mouse = sPhone.list(dir,{\\\
+		fg1b = colors.green,\\\
+	})\\\
+	if not path then\\\
+		break\\\
+	end\\\
+	if mouse == 1 then\\\
+		run(path)\\\
+	elseif mouse == 2 then\\\
+		while true do\\\
+			local w,h = term.getSize()\\\
+			term.setBackgroundColor(sPhone.theme[\\\"backgroundColor\\\"])\\\
+			term.setTextColor(sPhone.theme[\\\"text\\\"])\\\
+			term.clear()\\\
+			sPhone.header(fs.getName(path),\\\"X\\\")\\\
+			term.setCursorPos(2,3)\\\
+			write(\\\"Size: \\\")\\\
+			term.setTextColor(colors.gray)\\\
+			local siz = fs.getSize(path)\\\
+			local text\\\
+			if siz == 1 then\\\
+				text = siz..\\\" byte\\\"\\\
+			else\\\
+				text = siz..\\\" bytes\\\"\\\
+			end\\\
+			print(text)\\\
+			term.setTextColor(sPhone.theme[\\\"text\\\"])\\\
+			term.setCursorPos(2,5)\\\
+			write(\\\"Type: \\\")\\\
+			term.setTextColor(colors.gray)\\\
+			print(string.getExtension(fs.getName(path)) or \\\"none\\\")\\\
+			term.setTextColor(sPhone.theme[\\\"text\\\"])\\\
+			term.setCursorPos(2,8)\\\
+			print(\\\"Actions\\\")\\\
+			term.setTextColor(colors.gray)\\\
+			term.setCursorPos(2,10)\\\
+			print(\\\"Run with arguments\\\")\\\
+			term.setCursorPos(2,11)\\\
+			print(\\\"Edit\\\")\\\
+			term.setCursorPos(2,12)\\\
+			print(\\\"Rename\\\")\\\
+			term.setCursorPos(2,13)\\\
+			print(\\\"Delete\\\")\\\
+			term.setTextColor(sPhone.theme[\\\"text\\\"])\\\
+			local _,_,x,y = os.pullEvent(\\\"mouse_click\\\")\\\
+			if y == 1 and x == w then\\\
+				break\\\
+			elseif y == 10 then\\\
+				term.setCursorPos(2,h-1)\\\
+				write(\\\"Args: \\\")\\\
+				term.setTextColor(colors.gray)\\\
+				shell.run(path..\\\" \\\"..read())\\\
+			elseif y == 11 then\\\
+				shell.run(\\\"edit\\\",path)\\\
+			elseif y == 12 then\\\
+				term.setCursorPos(2,h-1)\\\
+				write(\\\"Rename: \\\")\\\
+				term.setTextColor(colors.gray)\\\
+				local oldPath = path\\\
+				path = fs.getDir(path)..\\\"/\\\"..read()\\\
+				fs.move(oldPath,path)\\\
+			elseif y == 13 then\\\
+				fs.delete(path)\\\
+				break\\\
+			end\\\
+		end\\\
+	end\\\
+	dir = fs.getDir(path)\\\
+end\\\
+\\\
+return true\",\
+}",
+  config = "{\
+  type = \"app\",\
+  main = \"explorer.lua\",\
+  name = \"File Explorer\",\
+  id = \"sphone.explorer\",\
+  author = \"Sertex\",\
+  hidden = true,\
+  version = 1,\
+}",
+}

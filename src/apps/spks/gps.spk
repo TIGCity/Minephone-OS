@@ -1,0 +1,28 @@
+--
+-- Sertex Application Package
+-- Built with SPK builder 1.2
+--
+{
+  files = "{\
+  [ \"gps.lua\" ] = \"local x, y, z = gps.locate(0)\\\
+if not x then\\\
+  x, y, z = \\\"?\\\", \\\"?\\\", \\\"?\\\"\\\
+end\\\
+if tonumber(x) then\\\
+  sPhone.winOk(\\\"X Y Z\\\", math.ceil(x)..\\\" \\\"..math.ceil(y)..\\\" \\\"..math.ceil(z))\\\
+else\\\
+  sPhone.winOk(\\\"X Y Z\\\",\\\"? ? ?\\\")\\\
+end\\\
+\\\
+return true\",\
+}",
+  config = "{\
+  type = \"app\",\
+  name = \"GPS\",\
+  version = 1,\
+  id = \"sphone.gps\",\
+  author = \"Sertex\",\
+  hidden = true,\
+  main = \"gps.lua\",\
+}",
+}

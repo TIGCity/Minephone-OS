@@ -1,0 +1,95 @@
+--
+-- Sertex Application Package
+-- Built with SPK builder 1.2
+--
+{
+  files = "{\
+  [ \"appList.lua\" ] = \"local apps = {}\\\
+local function update()\\\
+	apps = config.list(\\\"/.sPhone/config/spklist\\\")\\\
+	for k,v in pairs(apps) do\\\
+		local h = config.read(\\\"/.sPhone/apps/spk/\\\"..k..\\\"/.spk\\\",\\\"hidden\\\")\\\
+		if h then\\\
+			apps[k] = nil\\\
+		end\\\
+	end\\\
+end\\\
+local function menu(id)\\\
+	local data = config.list(\\\"/.sPhone/apps/spk/\\\"..id..\\\"/.spk\\\")\\\
+	if data then\\\
+		term.setBackgroundColor(sPhone.theme[\\\"backgroundColor\\\"])\\\
+		term.setTextColor(sPhone.theme[\\\"text\\\"])\\\
+		term.clear()\\\
+		sPhone.header(\\\" Apps\\\",\\\"X\\\")\\\
+		term.setCursorPos(2,3)\\\
+		print(data.name)\\\
+		term.setCursorPos(2,6)\\\
+		term.setTextColor(colors.black)\\\
+		print(\\\"Author:\\\")\\\
+		term.setTextColor(colors.gray)\\\
+		term.setCursorPos(2,7)\\\
+		print(data.author)\\\
+		term.setCursorPos(2,9)\\\
+		term.setTextColor(colors.black)\\\
+		print(\\\"Type:\\\")\\\
+		term.setTextColor(colors.gray)\\\
+		term.setCursorPos(2,10)\\\
+		print((data.type or \\\"Normal\\\"))\\\
+		term.setCursorPos(2,12)\\\
+		term.setTextColor(colors.black)\\\
+		print(\\\"Version:\\\")\\\
+		term.setTextColor(colors.gray)\\\
+		term.setCursorPos(2,13)\\\
+		print(data.version)\\\
+		paintutils.drawLine(19,4,25,4,colors.red)\\\
+		term.setTextColor(colors.white)\\\
+		term.setCursorPos(19,4)\\\
+		write(\\\"Delete\\\")\\\
+		local w,h = term.getSize()\\\
+		while true do\\\
+			local _,_,mx,my = os.pullEvent(\\\"mouse_click\\\")\\\
+			if my == 1 and mx == w then\\\
+				break\\\
+			elseif (mx >= 19 and mx <= 25) and my == 4 then\\\
+				if fs.exists(\\\"/.sPhone/apps/spk/\\\"..data.id) then\\\
+					fs.delete(\\\"/.sPhone/apps/spk/\\\"..data.id)\\\
+				end\\\
+				config.write(\\\"/.sPhone/config/spklist\\\",data.id,nil)\\\
+				break\\\
+			end\\\
+		end\\\
+	end\\\
+end\\\
+\\\
+update()\\\
+\\\
+while true do\\\
+	local id, _, mouse = sPhone.list(nil,{\\\
+		list = apps,\\\
+		pairs = true,\\\
+		title = \\\" Apps\\\"\\\
+	})\\\
+	if not id then\\\
+		break\\\
+	end\\\
+	if mouse == 1 then\\\
+		sPhone.launch(id)\\\
+		break\\\
+	elseif mouse == 2 then\\\
+		menu(id)\\\
+		update()\\\
+	end\\\
+end\\\
+\\\
+return true\",\
+}",
+  config = "{\
+  type = \"app\",\
+  name = \"Apps\",\
+  version = 1,\
+  id = \"sphone.appList\",\
+  author = \"Sertex\",\
+  hidden = true,\
+  main = \"appList.lua\",\
+}",
+}
